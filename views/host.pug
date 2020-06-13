@@ -9,10 +9,14 @@ html
       img.logo(src='/buzzer-logo.svg')
 
     div.container
-      h2.js-active=`${users.length} joined`
+      h2="Joined Users"
+      ol.js-active
+        each user in users
+          li=`${user}`
+      h2="Buzzed"
       ol.js-buzzes
         each buzz in buzzes
-          li=`${buzz.name} on Team ${buzz.team}`
+          li=`${buzz.name}`
       button.js-clear='Clear buzzes'
 
     script(src='/socket.io/socket.io.js')

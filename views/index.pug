@@ -11,16 +11,21 @@ html
 
     div.container
       form.view.js-join
-        img(src="/lets-play.png" class="main-image")
         h2="Let's play!"
+        ul
+          li="Adapted code from"
+          a(href="https://github.com/bufferapp/buzzer") this GitHub repository
+          li="It's basic, but will do the job!"
+          li="Known bug: if you disconnect it doesn't remove your name. It's ok, you can rejoin on the same name but it doesn't show this to the host. I will fix this if this is a problem."
+          li="Host: on the URL, add /host to view the host screen. I trust you all (lol) to not go here as it messes up the system."
+          li="This does make use of the browser's Local Storage functions, I guess I have to say by playing this you agree to a cookie being used."
         input(type='text' name='name' placeholder='Your name' required='required')
-        input(type='number' name='team' placeholder='Your team number' required='required')
         button(type='submit')='Join!'
 
+
       div.view.js-joined.hidden
-        button.js-buzzer.buzzer()='Buzz!!!'
+        button.js-buzzer.buzzer()='Buzz'
         p.js-joined-info=""
-        button.js-edit.secondary='Change teams'
 
     script(src='/socket.io/socket.io.js')
     script(src='/join.js')

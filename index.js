@@ -6,7 +6,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-const title = 'Buffer Buzzer'
+const title = 'TD_UK Buzzer'
 
 let data = {
   users: new Set(),
@@ -16,8 +16,8 @@ let data = {
 const getData = () => ({
   users: [...data.users],
   buzzes: [...data.buzzes].map(b => {
-    const [ name, team ] = b.split('-')
-    return { name, team }
+    const [name] = b.split('-')
+    return { name }
   })
 })
 
@@ -29,13 +29,13 @@ app.get('/host', (req, res) => res.render('host', Object.assign({ title }, getDa
 
 io.on('connection', (socket) => {
   socket.on('join', (user) => {
-    data.users.add(user.id)
-    io.emit('active', [...data.users].length)
+    data.users.add(user.name)
+    io.emit('active', [...data.users])
     console.log(`${user.name} joined!`)
   })
 
   socket.on('buzz', (user) => {
-    data.buzzes.add(`${user.name}-${user.team}`)
+    data.buzzes.add(`${user.name}`)
     io.emit('buzzes', [...data.buzzes])
     console.log(`${user.name} buzzed in!`)
   })
@@ -43,7 +43,12 @@ io.on('connection', (socket) => {
   socket.on('clear', () => {
     data.buzzes = new Set()
     io.emit('buzzes', [...data.buzzes])
+    io.emit('reset', "Yes")
     console.log(`Clear buzzes`)
+  })
+
+  socket.on('disconnect', (user) => {
+    console.log(`${socket.id} left!`)
   })
 })
 
